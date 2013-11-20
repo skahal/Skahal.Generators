@@ -1,9 +1,9 @@
-Skahal.Infrastructure.Generators
+Skahal.Generators
 ================================
 
 Skahal.Infrastructure T4 templates generators
 
-[![Build Status](https://travis-ci.org/skahal/Skahal.Infrastructure.Generators.png?branch=master)](https://travis-ci.org/skahal/Skahal.Infrastructure.Generators)
+[![Build Status](https://travis-ci.org/skahal/Skahal.Generators.png?branch=master)](https://travis-ci.org/skahal/Skahal.Generators)
 
 --------
 
@@ -49,9 +49,9 @@ Roadmap
 How to improve it?
 ======
 
-Create a fork of [Skahal.Infrastructure.Generators](https://github.com/skahal/Skahal.Infrastructure.Generators/fork). 
+Create a fork of [Skahal.Infrastructure.Generators](https://github.com/skahal/Skahal.Generators/fork). 
 
-Did you change it? [Submit a pull request](https://github.com/skahal/Skahal.Infrastructure.Generators/pull/new/master).
+Did you change it? [Submit a pull request](https://github.com/skahal/Skahal.Generators/pull/new/master).
 
 
 License
