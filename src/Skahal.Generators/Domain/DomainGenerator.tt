@@ -1,0 +1,180 @@
+﻿<#@ include file="../Config.tt" #>   
+  
+#region Usings    
+using System;  
+using System.Collections.Generic;    
+using System.IO;            
+using System.Linq;     
+using Skahal.Infrastructure.Framework.Commons;  
+using Skahal.Infrastructure.Framework.Domain; 
+using Skahal.Infrastructure.Framework.Repositories;   
+using HelperSharp;       
+using KissSpecifications;  
+#endregion             
+          
+<#       
+RunForEachModel((e) =>      
+{      
+	if(e.IsAggregateRoot)         
+	{     
+#>       
+namespace <#=e.Namespace#> 
+{   
+	public partial interface I<#=e.Name#>Repository : IRepository<<#=e.Name#>>
+	{
+	<#
+	foreach(var otherType in YourConfig.ModelTypes.Where(mt => mt != e.Type)) 
+	{   
+		var otherTypeProperties = otherType.GetProperties().Where(t1 => t1.PropertyType.IsGenericType).Distinct(); 
+	
+		foreach(var p in otherTypeProperties)
+		{  
+			if(p.PropertyType.IsGenericType) 
+			{
+				var propertyName = otherType.Name;	  
+				var propertyType = p.PropertyType.GetGenericArguments()[0].Name;
+				var argumentName = e.Name.ToLowerInvariant();
+				
+				if(propertyType.Equals(e.Type.Name)) 
+				{  
+#> 
+		IList<<#=propertyName#>> FindAll<#=propertyName#>s(<#=propertyType#> <#=argumentName#>);
+		int CountAll<#=propertyName#>s(<#=propertyType#> <#=argumentName#>);
+	
+<#				} 
+			}    
+		}   
+	}    
+#>
+	}   
+	  
+	// <summary>
+	/// Domain layer <#=e.LowerName#> service.
+	/// </summary>
+	public partial class <#=e.Name#>Service : <#=GetDomainServiceInheritance(e)#>
+	{ 
+		#region Constructors 
+      	/// <summary>  
+		/// Initializes a new instance of the <see cref="<#=e.Namespace#>.<#=e.PluralName#>.<#=e.Name#>Service"/> class.
+		/// </summary>
+		public  <#=e.Name#>Service()  
+		{
+		} 
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="<#=e.Namespace#>.<#=e.PluralName#>.<#=e.Name#>Service"/> class.
+		/// </summary>
+		/// <param name="<#=e.LowerName#>Repository"> <#=e.Name#> repository.</param>    
+		/// <param name="unitOfWork">Unit of work.</param> 
+		public  <#=e.Name#>Service(I<#=e.Name#>Repository <#=e.LowerName#>Repository, IUnitOfWork unitOfWork)
+		: base(<#=e.LowerName#>Repository, unitOfWork)
+		{
+		} 
+        #endregion
+		
+		#region Methods 
+		
+		/// <summary>
+		/// Gets the <#=e.LowerName#> by key.
+		/// </summary>
+		/// <returns>The <#=e.LowerName#>.</returns>
+		/// <param name="key">The key.</param>  
+		public <#=e.Name#> Get<#=e.Name#>ByKey(object key)
+		{
+			return MainRepository.FindBy (key);
+		}
+		
+		<#
+		if(e.HasProperty("Name"))
+		{ 
+		#>
+		/// <summary>
+		/// Gets the <#=e.LowerName#> by name.
+		/// </summary>
+		/// <returns>The <#=e.LowerName#></returns>
+		/// <param name="name">The name.</param>
+		public <#=e.Name#> Get<#=e.Name#>ByName(string name)
+		{
+			Func<<#=e.Name#>, bool> filter; 
+			
+			if(String.IsNullOrWhiteSpace(name))
+			{
+				filter = (e) => String.IsNullOrWhiteSpace(e.Name);
+			}
+			else {
+				filter = (e) => !String.IsNullOrWhiteSpace(e.Name) && e.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
+			}
+			
+			return MainRepository.FindAll (filter).FirstOrDefault ();
+		}
+		<#
+		}
+		#>
+		
+		/// <summary>
+		/// Gets all <#=e.PluralName#>. 
+		/// </summary>
+		/// <returns>The all <#=e.PluralName#>.</returns>
+		public IList<<#=e.Name#>> GetAll<#=e.PluralName#>()
+		{
+			return MainRepository.FindAll(g => true).ToList();
+		}
+		
+		/// <summary>
+		/// Counts all <#=e.PluralName#>.
+		/// </summary>
+		public long CountAll<#=e.PluralName#>() 
+		{ 
+			return MainRepository.CountAll (g => true); 
+		}
+
+		/// <summary>
+		/// Executes the save specification.
+		/// </summary>
+		partial void ExecuteSaveSpecification(<#=e.Name#> <#=e.ParameterName#>);
+		
+		/// <summary>
+		/// Saves the <#=e.LowerName#>.
+		/// </summary>
+		/// <param name="<#=e.LowerName#>">The <#=e.LowerName#>.</param>
+		public void Save<#=e.Name#>(<#=e.Name#> <#=e.ParameterName#>)
+		{
+			ExceptionHelper.ThrowIfNull ("<#=e.LowerName#>", <#=e.ParameterName#>);
+
+			ExecuteSaveSpecification (<#=e.ParameterName#>);
+			
+			MainRepository [<#=e.ParameterName#>.Key] = <#=e.ParameterName#>;
+			UnitOfWork.Commit (); 
+		} 
+
+		/// <summary> 
+		/// Executes the delete specification.
+		/// </summary>  
+		partial void ExecuteDeleteSpecification(object <#=e.LowerName#>Key, <#=e.Name#> <#=e.ParameterName#>);
+		  
+		/// <summary>  
+		/// Deletes the <#=e.LowerName#>.
+		/// </summary> 
+		/// <param name="key">The key.</param> 
+		public void Delete<#=e.Name#> (object key)
+		{ 
+			var <#=e.ParameterName#> = Get<#=e.Name#>ByKey (key);
+			
+			if(<#=e.ParameterName#> == null)
+			{
+				throw new ArgumentException("<#=e.Name#> with key '{0}' does not exists.".With(key));
+			}
+			
+			ExecuteDeleteSpecification (key, <#=e.ParameterName#>);
+
+			MainRepository.Remove (<#=e.ParameterName#>); 
+			UnitOfWork.Commit ();
+		}
+		#endregion
+	}
+}
+<#
+	}
+});
+#>
+

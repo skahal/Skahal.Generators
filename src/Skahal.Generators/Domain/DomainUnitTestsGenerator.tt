@@ -1,0 +1,195 @@
+﻿<#@ include file="../HeaderGenerator.tt" #>   
+  
+#region Usings    
+using System;
+using NUnit.Framework;  
+using TestSharp;  
+using Skahal.Infrastructure.Framework.Repositories;  
+using Skahal.Infrastructure.Framework.Commons;
+using <#=YourConfig.RepositoriesNamespace#>.Memory; 
+#endregion      
+   
+namespace <#=YourConfig.DomainNamespace#>.UnitTests  
+{ 
+	public static class Stubs  
+	{
+		#region Properties
+		public static IUnitOfWork UnitOfWork { get; set; }
+ 
+<#      
+RunForEachModel((e) =>    
+{    
+	if(e.IsAggregateRoot)     
+	{ 
+#> 
+		public static I<#=e.Name#>Repository <#=e.Name#>Repository { get; set; } 
+<#
+	} 
+});
+#>		 
+		#endregion 
+
+		#region Methods
+		public static void Initialize ()
+		{
+			DependencyService.Register<IUnitOfWork> (UnitOfWork = new MemoryUnitOfWork());
+<#       
+RunForEachModel((e) =>  
+{  
+	if(e.IsAggregateRoot)    
+	{ 
+#> 
+			DependencyService.Register<I<#=e.Name#>Repository> (<#=e.Name#>Repository = new Memory<#=e.Name#>Repository());
+			<#=e.Name#>Repository.SetUnitOfWork (UnitOfWork);
+<#
+	}
+});
+#>	
+		}
+		#endregion
+	}
+}
+
+         
+<#      
+RunForEachModel((e) =>  
+{ 
+	if(e.IsAggregateRoot)    
+	{    
+#>     
+
+	 
+namespace <#=YourConfig.DomainNamespace#>.UnitTests
+{
+	[TestFixture()]
+	public partial class <#=e.Name#>ServiceTest
+	{
+		#region Fields
+		private <#=e.Name#>Service m_target; 
+		#endregion
+  
+		#region Initialize
+		[SetUp]
+		public void InitializeTest()
+		{
+			Stubs.Initialize ();
+			Stubs.<#=e.Name#>Repository.Add (new <#=e.Name#>() { Key = 1 } );
+			Stubs.<#=e.Name#>Repository.Add (new <#=e.Name#>() { Key = 2 } );
+			Stubs.<#=e.Name#>Repository.Add (new <#=e.Name#>() { Key = 3 } );
+			Stubs.<#=e.Name#>Repository.Add (new <#=e.Name#>() { Key = 4 } );
+			Stubs.UnitOfWork.Commit ();
+
+			m_target = new <#=e.Name#>Service ();
+
+		}
+		#endregion
+
+		#region Tests
+		[Test]
+		public void CountAll<#=e.PluralName#>_NoArguments_All<#=e.PluralName#>Counted()
+		{
+			var actual = m_target.CountAll<#=e.PluralName#> ();
+			Assert.AreEqual (4, actual);
+		}
+
+		[Test]
+		public void Delete<#=e.Name#>_<#=e.Name#>NotExistis_Exception()
+		{
+			ExceptionAssert.IsThrowing (new ArgumentException("<#=e.Name#> with key '0' does not exists."), () => {
+				m_target.Delete<#=e.Name#>(0);
+			});
+		}
+   
+		[Test]
+		public void Delete<#=e.Name#>_<#=e.Name#>Existis_Exception()
+		{
+			Assert.AreEqual (4, m_target.CountAll<#=e.PluralName#> ());
+
+			m_target.Delete<#=e.Name#>(1);
+			Assert.AreEqual (3, m_target.CountAll<#=e.PluralName#> ());
+
+			m_target.Delete<#=e.Name#>(2);
+			Assert.AreEqual (2, m_target.CountAll<#=e.PluralName#> ());
+
+			m_target.Delete<#=e.Name#>(3);
+			Assert.AreEqual (1, m_target.CountAll<#=e.PluralName#> ());
+
+			m_target.Delete<#=e.Name#>(4);
+			Assert.AreEqual (0, m_target.CountAll<#=e.PluralName#> ());
+		}
+
+		[Test]
+		public void GetAll<#=e.PluralName#>_NoArgs_All<#=e.PluralName#> ()
+		{
+			var actual = m_target.GetAll<#=e.PluralName#>();
+			Assert.AreEqual (4, actual.Count);
+		}
+
+		[Test]
+		public void Get<#=e.Name#>ByKey_Key<#=e.Name#>DoesNotExists_Null ()
+		{
+			var actual = m_target.Get<#=e.Name#>ByKey (0);
+			Assert.IsNull (actual);
+		}
+
+		[Test]
+		public void Get<#=e.Name#>ByKey_Key<#=e.Name#>Exists_<#=e.Name#> ()
+		{
+			var actual = m_target.Get<#=e.Name#>ByKey (2);
+			Assert.AreEqual (2, actual.Key);
+
+			actual = m_target.Get<#=e.Name#>ByKey (3);
+			Assert.AreEqual (3, actual.Key);
+		}	
+	 
+		[Test]
+		public void Save<#=e.Name#>_Null_Exception ()
+		{
+			ExceptionAssert.IsThrowing (new ArgumentNullException("<#=e.LowerName#>"), () => {
+				m_target.Save<#=e.Name#> (null);
+			});
+		}
+<# 
+		if(CanGenerateDomainUnitTestMethod("Save{0}_{0}DoesNotExists_Created".With(e.Name)))
+		{   
+#> 
+		[Test]  
+		public void Save<#=e.Name#>_<#=e.Name#>DoesNotExists_Created()
+		{
+			var <#=e.VariableName#> = new <#=e.Name#> () { Key = 5 };
+ 
+			m_target.Save<#=e.Name#> (<#=e.VariableName#>);
+
+			Assert.AreEqual(5, m_target.CountAll<#=e.PluralName#>());
+			Assert.AreEqual (5, m_target.Get<#=e.Name#>ByKey (<#=e.VariableName#>.Key).Key);
+		}
+<#		} 
+
+		if(CanGenerateDomainUnitTestMethod("Save{0}_{0}DoesExists_Updated".With(e.Name)))
+		{   
+#> 
+		[Test]
+		public void Save<#=e.Name#>_<#=e.Name#>DoesExists_Updated()
+		{
+			var <#=e.VariableName#> = new <#=e.Name#> () { 
+				Key = 1 
+			};
+
+			m_target.Save<#=e.Name#> (<#=e.VariableName#>);
+
+			Assert.AreEqual(4, m_target.CountAll<#=e.PluralName#>());
+			Assert.AreEqual (1, m_target.Get<#=e.Name#>ByKey (<#=e.VariableName#>.Key).Key);
+		}
+<# 
+		}  
+#> 
+		#endregion
+	}
+}
+
+
+
+<#
+	}
+});
+#>	

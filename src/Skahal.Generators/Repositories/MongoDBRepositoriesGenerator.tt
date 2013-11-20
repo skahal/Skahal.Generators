@@ -1,0 +1,37 @@
+﻿<#@ include file="../HeaderGenerator.tt" #>   
+
+using System;
+using Skahal.Infrastructure.Framework.Repositories;
+using Skahal.Infrastructure.Repositories;
+using <#=YourConfig.DomainNamespace#>;
+
+	  
+<# 
+RunForEachModel((e) =>   
+{ 
+	if(e.IsAggregateRoot)     
+	{   
+#> 
+      
+namespace <#=YourConfig.RepositoriesNamespace#>.MongoDB 
+{   
+	/// <summary> 
+	/// MongoDB <#=e.Name#> repository.   
+	/// </summary>
+	public class MongoDB<#=e.Name#>Repository : MongoDBRepositoryBase<<#=e.Name#>>,  I<#=e.Name#>Repository
+	{
+		#region Constructors 
+		/// <summary>  
+		/// Initializes a new instance of the
+		/// <see cref="<#=YourConfig.RepositoriesNamespace#>.MongoDB.MongoDB<#=e.Name#>Repository"/> class.
+		/// </summary>
+		public MongoDB<#=e.Name#>Repository() : base(<#=YourConfig.MongoDBRepositoryMongoUrlCode#>, "<#=e.PluralName#>")
+		{
+		}
+		#endregion
+	}
+}
+<#
+	}
+});
+#> 

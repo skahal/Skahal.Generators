@@ -1,0 +1,30 @@
+<#@ include file="References.tt" #>   
+
+<# // PUT YOUR ASSEMBLIES AND NAMESPACES HERE. #>
+<#@ assembly name="$(SolutionDir)/Samples/Domain/bin/Debug/Skahal.Generators.Samples.Domain.dll" #>
+<#@ import namespace="Skahal.Generators.Samples.Domain" #>
+
+<#+
+public static class YourConfig
+{
+	// SET YOUR DOMAIN ASSEMBLY NAME.
+	public static string DomainAssemblyName = "Skahal.Generators.Samples.Domain.dll";
+	public static string DomainNamespace = "Skahal.Generators.Samples.Domain";
+
+	public static string RepositoriesNamespace = "Skahal.Generators.Samples.Repositories";
+	public static string MongoDBRepositoryMongoUrlCode = "System.Configuration.ConfigurationManager.AppSettings.Get(\"(MONGOHQ_URL|MONGOLAB_URI)\")";
+
+	public static string WebApiNamespace = "Skahal.Generators.Samples.WebApi";
+
+	public static Type[] ModelTypes = new Type[]
+	{
+		typeof(Company)
+		// PUT YOUR DOMAIN ENTITIES HERE.
+	};		
+
+	public static string[] DomainUnitTestsIgnoreMethods = new string[]
+	{
+		// PUT HERE THE NAME OF DOMAIN UNIT TESTS YOU WANT TO IGNORE (NOT GENERATE ANYMORE).
+	};		
+}
+#>

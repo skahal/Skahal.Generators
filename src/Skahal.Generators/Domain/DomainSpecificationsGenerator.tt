@@ -1,0 +1,86 @@
+﻿<#@ include file="../Config.tt" #>   
+  
+#region Usings    
+using System;  
+using System.Collections.Generic;    
+using System.IO;        
+using System.Linq;    
+using Skahal.Infrastructure.Framework.Commons;    
+using Skahal.Infrastructure.Framework.Domain;
+using Skahal.Infrastructure.Framework.Repositories;
+using HelperSharp;  
+using KissSpecifications;   
+#endregion           
+            
+<#      
+RunForEachModel((e) =>   
+{     
+	if(e.IsAggregateRoot)      
+	{     
+#>     
+namespace <#=e.Namespace#>.Specifications
+{   
+	/// <summary>   
+	/// <#=e.Name#> exists specification.  
+	/// </summary>
+	public class <#=e.Name#>ExistsSpecification : SpecificationBase<<#=e.Name#>>
+	{
+		#region implemented abstract members of SpecificationBase
+		/// <summary>
+		/// Determines whether the target object satisfiy the specification.
+		/// </summary>
+		/// <param name="target">The target object to be validated.</param>
+		/// <returns><c>true</c> if this instance is satisfied by the specified target; otherwise, <c>false</c>.</returns>
+		public override bool IsSatisfiedBy (<#=e.Name#> target)
+		{
+			if(target == null)
+			{
+				NotSatisfiedReason = "<#=e.Name#> can't be null.";
+				return false;
+			}
+			else if(new <#=e.Name#>Service().Get<#=e.Name#>ByKey(target.Key) == null)
+			{
+				NotSatisfiedReason = "<#=e.Name#> with key '{0}' does not exists.".With (target.Key);
+				return false;
+			}
+			
+			return true;
+		}
+
+		#endregion
+	}
+	 
+	<#if(e.HasProperty("Name")) { #>
+	/// <summary>
+	/// <#=e.Name#> unique name specification.
+	/// </summary>
+	public class <#=e.Name#>UniqueNameSpecification : SpecificationBase<<#=e.Name#>>
+	{
+		#region implemented abstract members of SpecificationBase
+		/// <summary> 
+		/// Determines whether the target object satisfiy the specification.
+		/// </summary>
+		/// <param name="target">The target object to be validated.</param>
+		/// <returns><c>true</c> if this instance is satisfied by the specified target; otherwise, <c>false</c>.</returns>
+		public override bool IsSatisfiedBy (<#=e.Name#> target)
+		{
+			var <#=e.LowerName#>Service = new <#=e.Name#>Service ();
+			var other<#=e.Name#>WithSameName = <#=e.LowerName#>Service.Get<#=e.Name#>ByName (target.Name);
+
+			if (other<#=e.Name#>WithSameName != null && other<#=e.Name#>WithSameName != target) {
+				NotSatisfiedReason = "There is another <#=e.Name#> with the name '{0}'. <#=e.PluralName#> should have unique name.".With (target.Name);
+				return false;
+			} 
+
+			return true;
+		}
+
+		#endregion
+	}
+	<#}#>
+}
+<#
+	}
+});
+#>
+

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Skahal.Infrastructure.Repositories.MongoDB</name>
+    </assembly>
+    <members>
+        <member name="T:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1">
+            <summary>
+            Mongo DB repository base class.
+            </summary>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.#ctor">
+            <summary>
+            Initializes the <see cref="T:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1" /> class.
+            </summary>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1" /> class.
+            </summary>
+            <param name="mongoUrl">Mongo URL.</param>
+            <param name="collectionName">Collection name.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.FindBy(System.Object)">
+            <summary>
+            Finds the entity by the key.
+            </summary>
+            <returns>The found entity.</returns>
+            <param name="key">Key.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.FindAll(System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Finds all entities that matches the filter.
+            </summary>
+            <returns>The found entities.</returns>
+            <param name="offset">The offset to start the result.</param>
+            <param name="limit">The result count limit.</param>
+            <param name="filter">The entities filter.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.FindAllAscending``1(System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Finds all entities that matches the filter in a ascending order.
+            </summary>
+            <returns>The found entities.</returns>
+            <param name="offset">The offset to start the result.</param>
+            <param name="limit">The result count limit.</param>
+            <param name="filter">The entities filter.</param>
+            <param name="orderBy">The order.</param>
+            <typeparam name="TKey">The 1st type parameter.</typeparam>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.FindAllDescending``1(System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Finds all entities that matches the filter in a descending order.
+            </summary>
+            <returns>The found entities.</returns>
+            <param name="offset">The offset to start the result.</param>
+            <param name="limit">The result count limit.</param>
+            <param name="filter">The entities filter.</param>
+            <param name="orderBy">The order.</param>
+            <typeparam name="TKey">The 1st type parameter.</typeparam>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.CountAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Counts all entities that matches the filter.
+            </summary>
+            <returns>The number of the entities that matches the filter.</returns>
+            <param name="filter">Filter.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.PersistNewItem(`0)">
+            <summary>
+            Persists the new item.
+            </summary>
+            <param name="item">Item.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.PersistUpdatedItem(`0)">
+            <summary>
+            Persists the updated item.
+            </summary>
+            <param name="item">Item.</param>
+        </member>
+        <member name="M:Skahal.Infrastructure.Repositories.MongoDBRepositoryBase`1.PersistDeletedItem(`0)">
+            <summary>
+            Persists the deleted item.
+            </summary>
+            <param name="item">Item.</param>
+        </member>
+    </members>
+</doc>

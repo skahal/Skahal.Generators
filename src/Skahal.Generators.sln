@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9D180494-88FE-4A59-A0D4-41EE4A2E80BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Domain", "Samples\Domain\Samples.Domain.csproj", "{35157452-C8F2-4F76-8BDC-77D8188E373A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Domain.UnitTests", "Samples\Domain.UnitTests\Samples.Domain.UnitTests.csproj", "{D996CACD-CCCA-4EED-9926-72ED89914AD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Infrastructure.Repositories", "Samples\Infrastructure.Repositories\Samples.Infrastructure.Repositories.csproj", "{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.WebApi", "Samples\WebApi\Samples.WebApi.csproj", "{B8F7AED1-9062-4194-8438-BB4B50DC4E5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skahal.Generators", "Skahal.Generators\Skahal.Generators.csproj", "{8EB1686E-836D-48B1-8966-65F973934D67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35157452-C8F2-4F76-8BDC-77D8188E373A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35157452-C8F2-4F76-8BDC-77D8188E373A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35157452-C8F2-4F76-8BDC-77D8188E373A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35157452-C8F2-4F76-8BDC-77D8188E373A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB1686E-836D-48B1-8966-65F973934D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB1686E-836D-48B1-8966-65F973934D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB1686E-836D-48B1-8966-65F973934D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB1686E-836D-48B1-8966-65F973934D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8F7AED1-9062-4194-8438-BB4B50DC4E5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8F7AED1-9062-4194-8438-BB4B50DC4E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8F7AED1-9062-4194-8438-BB4B50DC4E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8F7AED1-9062-4194-8438-BB4B50DC4E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D996CACD-CCCA-4EED-9926-72ED89914AD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D996CACD-CCCA-4EED-9926-72ED89914AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D996CACD-CCCA-4EED-9926-72ED89914AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D996CACD-CCCA-4EED-9926-72ED89914AD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{35157452-C8F2-4F76-8BDC-77D8188E373A} = {9D180494-88FE-4A59-A0D4-41EE4A2E80BB}
+		{D996CACD-CCCA-4EED-9926-72ED89914AD6} = {9D180494-88FE-4A59-A0D4-41EE4A2E80BB}
+		{E57A3FB4-0900-4AD5-83AA-547D2ED92F7B} = {9D180494-88FE-4A59-A0D4-41EE4A2E80BB}
+		{B8F7AED1-9062-4194-8438-BB4B50DC4E5F} = {9D180494-88FE-4A59-A0D4-41EE4A2E80BB}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Samples\WebApi\Samples.WebApi.csproj
+	EndGlobalSection
+EndGlobal

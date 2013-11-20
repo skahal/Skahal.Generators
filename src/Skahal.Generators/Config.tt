@@ -1,0 +1,71 @@
+﻿<#@ template language="C#v3.5" #>
+<#@ include file="YourConfig.tt" #>   
+
+<#+ 
+class GenEntity
+{
+ 	public string Name;
+	public string LowerName;
+	public string Namespace;
+	public string PluralName;
+	public string ParameterName;
+	public string VariableName;
+	public bool HasImplementedIRepository;
+	public bool IsAggregateRoot;
+	public Type Type;
+	
+	public bool HasProperty(string name) 
+	{
+		return Type.GetProperty(name) != null;
+	}
+}
+ 
+void RunForEachModel(Action<GenEntity> action)
+{ 
+	foreach(var t in YourConfig.ModelTypes)   
+	{   
+		var model = new GenEntity(); 
+		model.Type = t;		
+		model.Name = t.Name;  
+		model.LowerName = model.Name.ToLowerInvariant(); 
+		model.ParameterName = GetParameterName(model.LowerName);
+		model.VariableName = model.ParameterName;
+		model.Namespace = t.Namespace;
+		model.PluralName = model.Name; 
+		  
+		if(model.Name.EndsWith("y")) 
+		{
+			model.PluralName = model.Name.Substring(0, model.Name.Length - 1) + "ies";
+		}   
+		else if(!model.Name.EndsWith("s"))	 
+		{    
+			model.PluralName = model.Name + "s"; 
+		}
+		
+		model.HasImplementedIRepository = Type.GetType(t.Namespace + ".I" + model.Name + "Repository, " + YourConfig.DomainAssemblyName) != null;
+		model.IsAggregateRoot = typeof(Skahal.Infrastructure.Framework.Domain.IAggregateRoot).IsAssignableFrom(t);
+
+		action(model); 
+	}
+}
+
+private string GetParameterName(string lowerName)
+{
+	if(lowerName.Equals("event"))
+	{
+		return "@event";
+	}
+	
+	return lowerName;
+}
+
+bool CanGenerateDomainUnitTestMethod(string methodName)
+{
+	return !YourConfig.DomainUnitTestsIgnoreMethods.Contains(methodName);
+}
+
+string GetDomainServiceInheritance(GenEntity genEntity)
+{
+	return "ServiceBase<{0}, I{0}Repository, IUnitOfWork>".With(genEntity.Name);
+}
+#>

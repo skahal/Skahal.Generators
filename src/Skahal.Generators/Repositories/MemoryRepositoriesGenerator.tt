@@ -1,0 +1,42 @@
+﻿<#@ include file="../HeaderGenerator.tt" #>   
+
+using System;
+using Skahal.Infrastructure.Framework.Repositories;
+using <#=YourConfig.DomainNamespace#>;
+ 
+	  
+<# 
+RunForEachModel((e) =>   
+{ 
+	if(e.IsAggregateRoot)        
+	{   
+#> 
+      
+namespace <#=YourConfig.RepositoriesNamespace#>.Memory  
+{    
+	/// <summary>  
+	/// Testing <#=e.Name#> repository.   
+	/// </summary>  
+	public class Memory<#=e.Name#>Repository : MemoryRepository<<#=e.Name#>>, I<#=e.Name#>Repository
+	{
+		#region Fields 
+		private static long s_lastKey; 
+		private static object s_lock = new Object(); 
+		#endregion
+		
+		#region Constructors 
+		/// <summary>
+		/// Initializes a new instance of the 
+		/// <see cref="<#=YourConfig.RepositoriesNamespace#>.Memory.Memory<#=e.Name#>Repository"/> class.
+		/// </summary>
+		public Memory<#=e.Name#>Repository() : base((g) => { lock(s_lock) { return ++s_lastKey; } })
+		{
+			s_lastKey = 0;
+		}
+		#endregion
+	}
+}
+<#
+	}
+});
+#> 

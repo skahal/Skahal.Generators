@@ -1,0 +1,51 @@
+ <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+ <Target Name="AfterBuild">
+   	<ItemGroup>
+    	<DomainFile Include="Domain\DomainGenerator.cs" />
+    	<DomainSpecificationsFile Include="Domain\DomainSpecificationsGenerator.cs" />
+    	<DomainUnitTestsFile Include="Domain\DomainUnitTestsGenerator.cs" />
+    	<DomainSpecificationsUnitTestsFile Include="Domain\DomainSpecificationsUnitTestsGenerator.cs" />
+    	
+    	<MemoryRepositoriesFile Include="Repositories\MemoryRepositoriesGenerator.cs" />
+    	<MongoDBRepositoriesFile Include="Repositories\MongoDBRepositoriesGenerator.cs" />
+    	
+    	<WebApiFile Include="WebApi\WebApiGenerator.cs" />
+  	</ItemGroup>
+
+    <Copy
+        SourceFiles="@(DomainFile)"
+        DestinationFiles="..\Samples\Domain\DomainGenerated.cs"
+    />
+    
+    <Copy
+        SourceFiles="@(DomainSpecificationsFile)"
+        DestinationFiles="..\Samples\Domain\DomainSpecificationsGenerated.cs"
+    />
+    
+    <Copy
+            SourceFiles="@(DomainUnitTestsFile)"
+            DestinationFiles="..\Samples\Domain.UnitTests\DomainUnitTestsGenerated.cs"
+    />
+    
+    <Copy
+            SourceFiles="@(DomainSpecificationsUnitTestsFile)"
+            DestinationFiles="..\Samples\Domain.UnitTests\DomainSpecificationsUnitTestsGenerated.cs"
+    />
+    
+    <Copy
+        SourceFiles="@(MemoryRepositoriesFile)"
+        DestinationFiles="..\Samples\Infrastructure.Repositories\MemoryRepositoriesGenerated.cs"
+    />  
+    
+    <Copy
+        SourceFiles="@(MongoDBRepositoriesFile)"
+        DestinationFiles="..\Samples\Infrastructure.Repositories\MongoRepositoriesGenerated.cs"
+    />    
+     
+    <Copy
+        SourceFiles="@(WebApiFile)"
+        DestinationFiles="..\Samples\WebApi\Generated.cs"
+    /> 
+</Target>
+</Project>

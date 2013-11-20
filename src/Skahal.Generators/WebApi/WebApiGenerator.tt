@@ -1,0 +1,113 @@
+﻿<#@ include file="../HeaderGenerator.tt" #>   
+ <#@ assembly name="System.Core.dll" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Http;  
+using System.Web.Mvc; 
+using AspNetWebApi.ApiGee.Filters;
+	          
+<#   
+RunForEachModel((e) => 
+{ 
+	if(e.IsAggregateRoot)      
+	{ 
+#> 
+    
+namespace <#=YourConfig.WebApiNamespace#>.Controllers
+{ 
+	/// <summary>
+	/// <#=e.PluralName#>. 
+	/// </summary>
+    public partial class <#=e.PluralName#>Controller : ApiController
+    {
+		#region Fields 
+		private <#=e.Name#>Service m_service;
+		#endregion 
+
+		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="<#=YourConfig.WebApiNamespace#>.Controllers.<#=e.PluralName#>Controller"/> class.
+		/// </summary>
+		public <#=e.PluralName#>Controller()
+		{
+			m_service = new <#=e.Name#>Service ();
+		}
+		#endregion
+
+		/// <summary>
+		/// Get all <#=e.PluralName#>
+		/// </summary>
+        public IEnumerable<<#=e.Name#>> Get()
+        {
+			return m_service.GetAll<#=e.PluralName#> ();
+        }
+        
+        /// <summary>  
+		/// Get <#=e.Name#> by key.
+		/// </summary>  
+		/// <param name="key">The <#=e.Name#>'s key.</param>
+		/// <returns>The <#=e.Name#> with the specified key.</returns>
+        public <#=e.Name#> Get(long key)
+        {
+			return m_service.Get<#=e.Name#>ByKey (key);
+        }
+
+		<#
+		if(e.HasProperty("Name"))
+		{ 
+		#>
+		/// <summary> 
+		/// Gets the <#=e.LowerName#> by name.
+		/// </summary>
+		/// <returns>The <#=e.LowerName#></returns>
+		/// <param name="name">The name.</param>
+		public <#=e.Name#> Get<#=e.Name#>ByName(string name)
+		{
+			return m_service.Get<#=e.Name#>ByName (name);
+		}
+		<#
+		}
+		#>
+		
+		/// <summary>
+		/// Creates a new <#=e.Name#>.
+		/// </summary>
+		/// <param name="<#=e.LowerName#>">The <#=e.Name#> to create.</param>
+		/// <returns>The created <#=e.Name#> with the key.</returns>
+		public <#=e.Name#> Post(<#=e.Name#> <#=e.ParameterName#>)
+		{
+			m_service.Save<#=e.Name#> (<#=e.ParameterName#>);
+			 
+			return <#=e.ParameterName#>;
+		}
+
+		/// <summary>
+		/// Updates an existing <#=e.Name#>.
+		/// </summary>
+		/// <param name="key">The <#=e.Name#>'s key.</param>
+		/// <param name="<#=e.LowerName#>">The <#=e.Name#> with updated informations.</param>
+		public <#=e.Name#> Put(long key, <#=e.Name#> <#=e.ParameterName#>)
+		{
+	        <#=e.ParameterName#>.Key = key;
+			m_service.Save<#=e.Name#> (<#=e.ParameterName#>);
+
+			return <#=e.ParameterName#>;
+		}
+
+		/// <summary>
+		/// Deletes the <#=e.Name#> with the specified key.
+		/// </summary>
+		/// <param name="key">The key of the <#=e.Name#> to be deleted.</param>
+	    [SuccessHandlingFilter]
+        public void Delete(long key)
+		{
+			m_service.Delete<#=e.Name#> (key);
+		}
+    }
+}
+<#
+	}
+});
+#> 

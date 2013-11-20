@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8EB1686E-836D-48B1-8966-65F973934D67}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Skahal.Generators</RootNamespace>
+    <AssemblyName>Skahal.Generators</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="HelperSharp">
+      <HintPath>..\packages\HelperSharp.0.0.3.3\lib\net35\HelperSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>..\packages\System.IO.Abstractions.1.4.0.68\lib\net35\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Skahal.Infrastructure.Framework">
+      <HintPath>..\packages\Skahal.Infrastructure.Framework.0.5.9\lib\net35\Skahal.Infrastructure.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="KissSpecifications">
+      <HintPath>..\packages\KissSpecifications.1.1.0\lib\net35\KissSpecifications.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Utils.Zip">
+      <HintPath>..\packages\TestSharp.1.0.2\lib\net40\Ionic.Utils.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="TestSharp">
+      <HintPath>..\packages\TestSharp.1.0.2\lib\net40\TestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Skahal.Infrastructure.Repositories.MongoDB">
+      <HintPath>..\references\Skahal.Infrastructure.Repositories.MongoDB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="Config.tt">
+      <LastGenOutput>Config.cs</LastGenOutput>
+    </None>
+    <None Include="HeaderGenerator.tt" />
+    <None Include="Domain\DomainGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Domain\DomainSpecificationsGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainSpecificationsGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Domain\DomainSpecificationsUnitTestsGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainSpecificationsUnitTestsGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Domain\DomainUnitTestsGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainUnitTestsGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Repositories\MemoryRepositoriesGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MemoryRepositoriesGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Repositories\MongoDBRepositoriesGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MongoDBRepositoriesGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="WebApi\WebApiGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WebApiGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="YourConfig.tt">
+      <LastGenOutput>YourConfig.cs</LastGenOutput>
+    </None>
+    <None Include="References.tt">
+      <LastGenOutput>References.cs</LastGenOutput>
+    </None>
+    <None Include="Domain\DomainGenerator.cs">
+      <DependentUpon>DomainGenerator.tt</DependentUpon>
+    </None>
+    <None Include="Domain\DomainSpecificationsGenerator.cs">
+      <DependentUpon>DomainSpecificationsGenerator.tt</DependentUpon>
+    </None>
+    <None Include="Domain\DomainSpecificationsUnitTestsGenerator.cs">
+      <DependentUpon>DomainSpecificationsUnitTestsGenerator.tt</DependentUpon>
+    </None>
+    <None Include="Domain\DomainUnitTestsGenerator.cs">
+      <DependentUpon>DomainUnitTestsGenerator.tt</DependentUpon>
+    </None>
+    <None Include="Repositories\MemoryRepositoriesGenerator.cs">
+      <DependentUpon>MemoryRepositoriesGenerator.tt</DependentUpon>
+    </None>
+    <None Include="Repositories\MongoDBRepositoriesGenerator.cs">
+      <DependentUpon>MongoDBRepositoriesGenerator.tt</DependentUpon>
+    </None>
+    <None Include="WebApi\WebApiGenerator.cs">
+      <DependentUpon>WebApiGenerator.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="WebApi\" />
+  </ItemGroup>
+  <Import Project="..\msbuilds\Skahal.Generators.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Samples\Domain\Samples.Domain.csproj">
+      <Project>{35157452-C8F2-4F76-8BDC-77D8188E373A}</Project>
+      <Name>Samples.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
