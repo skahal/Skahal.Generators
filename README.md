@@ -49,7 +49,7 @@ Roadmap
 How to improve it?
 ======
 
-Create a fork of [Skahal.Infrastructure.Generators](https://github.com/skahal/Skahal.Generators/fork). 
+Create a fork of [Skahal.Generators](https://github.com/skahal/Skahal.Generators/fork). 
 
 Did you change it? [Submit a pull request](https://github.com/skahal/Skahal.Generators/pull/new/master).
 
