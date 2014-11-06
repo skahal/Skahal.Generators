@@ -38,6 +38,8 @@ Using
 * Download the whole source code inside your root solution source code folder.
 * Config the YourConfig.tt file to reference your domain and infrastructure assemblies and namespaces.
 * Change the msbuilds/Skahal.Generators.targets to copy the file to your folders.
+* For each .tt that you want to use, hit "Run custom tool" or hit "Transform all templates" on Skahal.Generators project.
+* Rebuild Skahal.Generators to run the tasks inside Skahal.Generators.targets.
 
 --------
 
