@@ -33,8 +33,11 @@ Features
  				- PUT /resource/id
  				- DELETE /resource/id
  			
- 		
- 	
+Using
+===	
+* Download the whole source code inside your root solution source code folder.
+* Config the YourConfig.tt file to reference your domain and infrastructure assemblies and namespaces.
+* Change the msbuilds/Skahal.Generators.targets to copy the file to your folders.
 
 --------
 
