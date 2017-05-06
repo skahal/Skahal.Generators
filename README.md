@@ -3,8 +3,6 @@ Skahal.Generators
 
 Skahal.Infrastructure T4 templates generators
 
-[![Build Status](https://travis-ci.org/skahal/Skahal.Generators.png?branch=master)](https://travis-ci.org/skahal/Skahal.Generators)
-
 --------
 
 Features
